@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.UUID
 import kotlin.random.Random
 
 data class Drink(
     var name: String,
-    val ingredients: List<String> = listOf()
+    val ingredients: List<String> = listOf(),
+    val id: UUID = UUID.randomUUID(),
 ) {}
 
 class DrinksViewModel: ViewModel() {
