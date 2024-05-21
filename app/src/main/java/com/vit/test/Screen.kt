@@ -5,10 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vit.test.Views.AddDrinkView
 import com.vit.test.Views.MainView
-import com.vit.test.Views.defaultDrinks
 
 @Preview(device = Devices.PIXEL_3)
 @Composable
@@ -29,7 +26,7 @@ fun RootScreen2() {
         currRoute.value = dest.route ?: ""
     }
 
-    var drinks by remember { mutableStateOf(defaultDrinks()) }
+    val drinksVM = remember { DrinksViewModel() }
 
     Scaffold(
         topBar = {
@@ -46,13 +43,7 @@ fun RootScreen2() {
                 actions = {
                     when(currRoute.value)
                     {
-                        Route.Main.name -> {
-                            MainActions(navController, onShuffle = {
-                                drinks = drinks.toMutableList().apply {
-                                    shuffle()
-                                }
-                            })
-                        }
+                        Route.Main.name -> { MainActions(navController, drinksVM) }
                         Route.AddDrink.name -> { AddActions(navController) }
                         else -> {}
                     }
@@ -78,14 +69,7 @@ fun RootScreen2() {
             startDestination = Route.Main.name,
             modifier=Modifier.padding(it)
         ){
-            composable(Route.Main.name) {
-                MainView(drinks.toMutableList(),
-                    onRemove = {
-                    drinks = drinks.toMutableList().apply {
-                        remove(it)
-                    }
-                })
-            }
+            composable(Route.Main.name) { MainView(drinksVM) }
             composable(Route.AddDrink.name) { AddDrinkView() }
         }
     }
