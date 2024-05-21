@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 data class Drink(
     var name: String,
-    val ingredients: MutableList<String> = mutableListOf()
+    val ingredients: List<String> = listOf()
 ) {}
 
 class DrinksViewModel: ViewModel() {
@@ -29,10 +29,9 @@ class DrinksViewModel: ViewModel() {
     }
 
     companion object {
+        private val defaultNames = listOf("tea", "coffee", "water", "soda", "custom")
+        val defaultIngredients = listOf("water", "sugar", "milk", "cream", "ice")
         fun defaultDrinks(): List<Drink> {
-            val defaultNames = listOf("tea", "coffee", "water", "soda", "custom")
-            val defaultIngredients = mutableListOf("water", "sugar", "milk", "cream", "ice")
-
             val drinks: MutableList<Drink> = mutableListOf()
 
             for (i in 0..<10) {

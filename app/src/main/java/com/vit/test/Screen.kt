@@ -18,66 +18,18 @@ import com.vit.test.Views.MainView
 
 @Preview(device = Devices.PIXEL_3)
 @Composable
-fun RootScreen2() {
+fun RootScreen() {
     val navController = rememberNavController()
-
-    val currRoute = remember{ mutableStateOf(Route.Main.name) }
-    navController.addOnDestinationChangedListener { _, dest, _ ->
-        currRoute.value = dest.route ?: ""
-    }
-
     val drinksVM = remember { DrinksViewModel() }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    val title = if (currRoute.value == Route.Main.name){
-                        "Choose Drink App"
-                    } else {
-                        currRoute.value
-                    }
-
-                    Text(title)
-                },
-                actions = {
-                    when(currRoute.value)
-                    {
-                        Route.Main.name -> { MainActions(navController, drinksVM) }
-                        Route.AddDrink.name -> { AddActions(navController) }
-                        else -> {}
-                    }
-                },
-                navigationIcon = if (currRoute.value != Route.Main.name) {
-                    {
-                        IconButton(onClick = { navController.navigateUp() }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
-                } else {
-                    null
-                }
-            )
-        },
-
-    ) {
-        NavHost(
-            navController = navController,
-            startDestination = Route.Main.name,
-            modifier=Modifier.padding(it)
-        ){
-            composable(Route.Main.name) { MainView(drinksVM) }
-            composable(Route.AddDrink.name) { AddDrinkView() }
-        }
+    NavHost(
+        navController = navController,
+        startDestination = Route.Main.name) {
+        composable(Route.Main.name) { MainView(navController, drinksVM) }
+        composable(Route.AddDrink.name) { AddDrinkView(navController, drinksVM) }
     }
 }
 
-@Preview
-@Composable
-fun RootScreen() {
     // screen1:
     // toolbar
     //     add drink button (navigate to screen2)
@@ -101,9 +53,5 @@ fun RootScreen() {
     // ....
 
     // ingredients: water, sugar, milk, coffee, ice
-
-
-
-}
 
 
