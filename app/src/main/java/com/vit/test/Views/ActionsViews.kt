@@ -23,10 +23,8 @@ fun MainActions(navController: NavHostController, drinkList: DrinksViewModel) {
 }
 
 @Composable
-fun AddActions(navController: NavHostController) {
-    IconButton(onClick = {
-        navController.navigate(Route.Main.name)
-    }) {
+fun AddActions(navController: NavHostController, onAdd: () -> Unit) {
+    IconButton(onClick = onAdd) {
         Icon(imageVector = Icons.Default.Save, contentDescription = null)
     }
 }
